@@ -1,5 +1,4 @@
-
-byte RECV_PIN =12;
+int RECV_PIN =12;
 int ENA = 6;
 int M1 = 2;
 int M2 = 3;
@@ -33,7 +32,7 @@ Serial.println(value);
 Serial.println(SW);      
 
   // Robot maju mengejar bola
-  if (value == 20655)
+  if (value == 10)
   {
        analogWrite(ENA, 255); 
        digitalWrite(M1, HIGH);
