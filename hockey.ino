@@ -1,3 +1,4 @@
+#include <IRremote.h> //biar bisa make infrared
 int RECV_PIN =12;
 int ENA = 6;
 int M1 = 2;
@@ -5,10 +6,12 @@ int M2 = 3;
 int ENB = 9;
 int M3 = 7;
 int M4 = 8;
+int IrData;
+IRrecv irrecv(RECV_PIN);
 const int LS = 4; 
 const int LS1 = 11;            
 void setup(){     
- Serial.begin(115200);     
+ Serial.begin(9600);     
  pinMode(ENA, OUTPUT);     
  pinMode(M1, OUTPUT);     
  pinMode(M2, OUTPUT);
@@ -19,12 +22,17 @@ void setup(){
  pinMode(LS1, INPUT_PULLUP);
  pinMode(LS, INPUT);    
  pinMode(LS1,INPUT);                                                                                                                                             
- 
  irrecv.enableIRIn();
 }     
+int infrared(){ // kunci infrared
+     if (IrReceiver.decode())
+    IrData=IrReceiver.decodedIRData.command;
+    IrReceiver.resume();
+    delay(200); 
+    return IrData;
+}
 void loop(){   
-  if (irrecv.decode(&results)){     
-int value = results.value;     
+int value = infrared();   
 Serial.println(value); 
 int SW = digitalRead(LS);
 int SW1 = digitalRead(LS1);      
@@ -43,7 +51,7 @@ Serial.println(SW);
        Serial.print("data bola terdeteksi");
   }
    // Robot maju menuju gawang
-  else if (  SW == 0 )// 9945 Gawang
+  else if (  value = 100 && SW == 0 )// 9945 Gawang
   {
        analogWrite(ENA, 100);
        digitalWrite(M1, HIGH);
@@ -121,9 +129,5 @@ Serial.println(SW);
        digitalWrite(M4, HIGH);   
        Serial.print("cari bola ");
   }
- 
-  {
-     irrecv.resume();      
-     
-} 
+  
 }  
